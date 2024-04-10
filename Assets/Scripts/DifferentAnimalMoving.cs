@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DifferentAnimalMoving : AnimalMoving
+public class DifferentAnimalMoving : AnimalMoving //INHERITANCE
 {
     protected override void Update()
     {

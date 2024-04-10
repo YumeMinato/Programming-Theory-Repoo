@@ -35,7 +35,7 @@ public class AnimalMoving : MonoBehaviour
         if (distanceToTarget < stoppingDistance)
         {
             speed = 0f; // Stop moving if close to the target
-              circleMovement.StartMoving();
+            circleMovement.StartMoving();
         }
     }
 

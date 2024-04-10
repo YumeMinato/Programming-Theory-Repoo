@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CircleMovementOpposite : CircleMovement
 {
-    protected override void Start()
+    protected override void Start() //POLYMORPHIS
     {
         // Set the center object to the same object as the base class
         centerObject = base.centerObject;
@@ -22,7 +22,7 @@ public class CircleMovementOpposite : CircleMovement
         base.targetPosition = new Vector3(-1547.695f, 6, -1351);
     }
 
-    protected override void MoveInCircle()
+    protected override void MoveInCircle() //POLYMORHPIS
     {
         // Calculate the new position of the object based on the current angle
         float x = radius * Mathf.Cos(angle);
