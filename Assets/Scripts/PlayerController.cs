@@ -4,58 +4,63 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float speed = 40.0f;
-    public float speedMultiplier = 2;
-
-    public float xnRange = 1628;
-    public float xmRange = -1492;
-    public float zBottomLimit = -1360;
-    public float zTopLimit = -1310;
-
     private Vector3 movementDirection = Vector3.zero;
-    // Update is called once per frame
-    void Update()
+
+    // ENCAPSULATION
+    [SerializeField] private float speed = 40.0f;
+    [SerializeField] private float speedMultiplier = 2;
+    [SerializeField] private float xnRange = 1628;
+    [SerializeField] private float xmRange = -1492;
+    [SerializeField] private float zBottomLimit = -1360;
+    [SerializeField] private float zTopLimit = -1310;
+
+    // Properties can be used to encapsulate access to the private fields if needed
+    public float Speed { get => speed; set => speed = value; }
+    public float SpeedMultiplier { get => speedMultiplier; set => speedMultiplier = value; }
+    public float XnRange { get => xnRange; set => xnRange = value; }
+    public float XmRange { get => xmRange; set => xmRange = value; }
+    public float ZBottomLimit { get => zBottomLimit; set => zBottomLimit = value; }
+    public float ZTopLimit { get => zTopLimit; set => zTopLimit = value; }
+
+    private void Update()
     {
-        float horizontalInput = 0;
-        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
-        {
-            horizontalInput -= 1; // Move left
-        }
-        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
-        {
-            horizontalInput += 1; // Move right
-        }
-
-        float verticalInput = 0;
-        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
-        {
-            verticalInput += 1; // Move up
-        }
-        if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
-        {
-            verticalInput -= 1; // Move down
-        }
-
-        movementDirection = new Vector3(horizontalInput, 0, verticalInput).normalized;
-
-        float sprintModifier = Input.GetKey(KeyCode.LeftShift) ? speedMultiplier : 1f;
-
-        // Move the player based on movement direction and sprint modifier
-        transform.Translate(movementDirection * speed * sprintModifier * Time.deltaTime);
-
+        HandleInput();
+        MovePlayer();
         ClampPlayerPosition();
     }
 
-    void ClampPlayerPosition()
+    private void HandleInput()
     {
-        // Clamp X position within xRange
-        float clampedX = Mathf.Clamp(transform.position.x, -xnRange, xmRange);
+        float horizontalInput = GetAxisInput(KeyCode.LeftArrow, KeyCode.RightArrow, KeyCode.A, KeyCode.D);
+        float verticalInput = GetAxisInput(KeyCode.DownArrow, KeyCode.UpArrow, KeyCode.S, KeyCode.W);
 
-        // Clamp Z position within zBottom and zTop
-        float clampedZ = Mathf.Clamp(transform.position.z, zBottomLimit, zTopLimit);
+        movementDirection = new Vector3(horizontalInput, 0, verticalInput).normalized;
+    }
 
-        // Update player position
+    private float GetAxisInput(KeyCode negativeKey, KeyCode positiveKey, KeyCode alternativeNegativeKey, KeyCode alternativePositiveKey)
+    {
+        float input = 0;
+        if (Input.GetKey(negativeKey) || Input.GetKey(alternativeNegativeKey))
+        {
+            input -= 1; // Negative direction
+        }
+        if (Input.GetKey(positiveKey) || Input.GetKey(alternativePositiveKey))
+        {
+            input += 1; // Positive direction
+        }
+        return input;
+    }
+
+    private void MovePlayer()
+    {
+        float sprintModifier = Input.GetKey(KeyCode.LeftShift) ? SpeedMultiplier : 1f;
+        transform.Translate(movementDirection * Speed * sprintModifier * Time.deltaTime);
+    }
+
+    private void ClampPlayerPosition()
+    {
+        float clampedX = Mathf.Clamp(transform.position.x, -XnRange, XmRange);
+        float clampedZ = Mathf.Clamp(transform.position.z, ZBottomLimit, ZTopLimit);
         transform.position = new Vector3(clampedX, transform.position.y, clampedZ);
-
     }
 }
