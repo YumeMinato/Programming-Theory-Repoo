@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float xnRange = 1628;
     [SerializeField] private float xmRange = -1492;
     [SerializeField] private float zBottomLimit = -1360;
-    [SerializeField] private float zTopLimit = -1310;
+    [SerializeField] private float zTopLimit = -1280;
 
     // Properties can be used to encapsulate access to the private fields if needed
     public float Speed { get => speed; set => speed = value; }
