@@ -27,7 +27,8 @@ public class CircleMovementOpposite : CircleMovement
         // Calculate the new position of the object based on the current angle
         float x = radius * Mathf.Cos(angle);
         float z = radius * Mathf.Sin(angle);
-        transform.position = new Vector3(x, 0, -z) + centerObject.position;
+        float y = transform.position.y;
+        transform.position = new Vector3(x, y, -z) + centerObject.position;
 
         // Increase the angle for the next frame
         angle -= speed * Time.deltaTime;
